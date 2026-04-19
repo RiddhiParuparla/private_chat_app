@@ -15,9 +15,8 @@ const app = express();
 const server = http.createServer(app);
 
 // Middleware
-const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"].filter(Boolean);
 app.use(cors({
-  origin: allowedOrigins.length > 0 ? allowedOrigins : "*",
+  origin: true, // Dynamically allow whatever origin is making the request
   credentials: true
 }));
 app.use(express.json());
@@ -37,7 +36,7 @@ app.get("/", (req, res) => {
 // Socket Setup
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins.length > 0 ? allowedOrigins : "*",
+    origin: true,
     methods: ["GET", "POST"]
   }
 });

@@ -15,7 +15,11 @@ const app = express();
 const server = http.createServer(app);
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"].filter(Boolean);
+app.use(cors({
+  origin: allowedOrigins.length > 0 ? allowedOrigins : "*",
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
@@ -32,7 +36,7 @@ app.get("/", (req, res) => {
 // Socket Setup
 const io = new Server(server, {
   cors: {
-    origin: "*", // Adjust for production
+    origin: allowedOrigins.length > 0 ? allowedOrigins : "*",
     methods: ["GET", "POST"]
   }
 });

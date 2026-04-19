@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 
 // Generate JWT Helper
 const generateToken = (id) => {
+  if (!process.env.JWT_SECRET) {
+    console.error("JWT_SECRET is missing from environment variables!");
+    throw new Error("Server configuration error: Missing JWT_SECRET");
+  }
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
@@ -28,21 +32,25 @@ exports.register = async (req, res) => {
     }
 
     // Hash password
+    console.log("Hashing password for:", email);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    console.log("Attempting to create user in DB...");
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
     });
+    console.log("User created successfully:", user._id);
 
     if (user) {
+      const token = generateToken(user._id);
       res.status(201).json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        token: generateToken(user._id),
+        token: token,
       });
     } else {
       res.status(400).json({ message: "Invalid user data" });

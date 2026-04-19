@@ -22,9 +22,11 @@ const AuthPage = () => {
         loginUser(data, data.token);
       }
     } catch (err) {
-      const errorMsg = err.response?.data?.message || err.response?.data?.error || "Registration failed. Check console.";
-      setError(errorMsg);
-      console.error("Auth Error Details:", err.response?.data);
+      const data = err.response?.data;
+      const mainMsg = data?.message || "Registration failed";
+      const detailMsg = data?.error ? `(${data.error})` : "Check server logs";
+      setError(`${mainMsg}: ${detailMsg}`);
+      console.error("DEBUG - Full Auth Error:", data);
     }
   };
 

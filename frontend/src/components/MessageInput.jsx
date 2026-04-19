@@ -3,7 +3,7 @@ import { Send, Paperclip, Smile } from "lucide-react";
 import { socket } from "../socket/socket";
 import { useAuth } from "../context/AuthContext";
 
-import axios from "axios";
+import API from "../services/api";
 
 import EmojiPicker from "emoji-picker-react";
 
@@ -53,9 +53,7 @@ const MessageInput = ({ receiverId }) => {
     formData.append("file", file);
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/upload", formData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const { data } = await API.post("/upload", formData);
 
       socket.emit("send_message", {
         sender: user._id,

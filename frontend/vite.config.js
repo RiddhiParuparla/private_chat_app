@@ -4,10 +4,13 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  const apiUrl = env.VITE_API_URL || process.env.VITE_API_URL || '';
+  
   return {
     plugins: [react()],
     define: {
-      'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || process.env.VITE_API_URL)
+      'import.meta.env.VITE_API_URL': JSON.stringify(apiUrl),
+      'GLOBAL_API_URL': JSON.stringify(apiUrl)
     }
   }
 })

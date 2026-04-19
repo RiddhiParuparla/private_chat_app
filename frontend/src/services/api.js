@@ -1,9 +1,10 @@
 import axios from "axios";
 
-console.log("Connecting to API at:", import.meta.env.VITE_API_URL);
+const BASE_URL = import.meta.env.VITE_API_URL || (typeof GLOBAL_API_URL !== 'undefined' ? GLOBAL_API_URL : '');
+console.log("Connecting to API at:", BASE_URL);
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: BASE_URL,
 });
 
 // Interceptor to add JWT token to headers

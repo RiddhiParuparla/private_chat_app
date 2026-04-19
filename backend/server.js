@@ -27,6 +27,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
+app.use("/api/health", require("./routes/healthRoutes"));
 
 // Basic Route
 app.get("/", (req, res) => {

@@ -48,7 +48,12 @@ exports.register = async (req, res) => {
       res.status(400).json({ message: "Invalid user data" });
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("REGISTRATION ERROR:", err);
+    res.status(500).json({ 
+      message: "Registration failed on server", 
+      error: err.message,
+      stack: process.env.NODE_ENV === "development" ? err.stack : undefined
+    });
   }
 };
 

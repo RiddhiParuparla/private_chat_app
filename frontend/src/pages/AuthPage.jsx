@@ -22,7 +22,9 @@ const AuthPage = () => {
         loginUser(data, data.token);
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+      const errorMsg = err.response?.data?.message || err.response?.data?.error || "Registration failed. Check console.";
+      setError(errorMsg);
+      console.error("Auth Error Details:", err.response?.data);
     }
   };
 

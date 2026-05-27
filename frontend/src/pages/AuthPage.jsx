@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { login, register } from "../services/api";
+import { login, register, BASE_URL } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Lock, LogIn, UserPlus } from "lucide-react";
 
@@ -22,11 +22,15 @@ const AuthPage = () => {
         loginUser(data, data.token);
       }
     } catch (err) {
-      const data = err.response?.data;
-      const mainMsg = data?.message || "Registration failed";
-      const detailMsg = data?.error ? `(${data.error})` : "Check server logs";
-      setError(`${mainMsg}: ${detailMsg}`);
-      console.error("DEBUG - Full Auth Error:", data);
+      if (!err.response) {
+        setError(`Connection Error: The backend server at ${BASE_URL.replace("/api", "")} is unreachable. The service is offline or waking up. Please wait 1-2 minutes and try again.`);
+      } else {
+        const data = err.response?.data;
+        const mainMsg = data?.message || "Authentication failed";
+        const detailMsg = data?.error ? `(${data.error})` : "Check server logs";
+        setError(`${mainMsg}: ${detailMsg}`);
+      }
+      console.error("DEBUG - Full Auth Error:", err);
     }
   };
 

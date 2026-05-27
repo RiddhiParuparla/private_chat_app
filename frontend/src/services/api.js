@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "https://private-chat-app-qzju.onrender.com/api";
+export const BASE_URL = import.meta.env.VITE_API_URL || "https://private-chat-app-qzju.onrender.com/api";
 console.log("Connecting to API at:", BASE_URL);
 
 const API = axios.create({
